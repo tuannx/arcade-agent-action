@@ -1,0 +1,40 @@
+name: Arcade Agent Architecture Drift
+description: Deterministic architecture drift report on every PR — components, smells, metrics.
+author: arcade-agent
+branding:
+  icon: activity
+  color: blue
+
+inputs:
+  arcade-agent-version:
+    description: Released arcade-agent package version to install.
+    required: false
+    default: "0.4.2"
+  python-version:
+    description: Python version used for analysis.
+    required: false
+    default: "3.12"
+  source-path:
+    description: Path to project root for analysis, relative to the workspace.
+    required: false
+    default: "."
+  language:
+    description: Language override (java, python, typescript, c, go, kotlin, rust, multi).
+    required: false
+    default: ""
+  exclude-tests:
+    description: Apply the built-in test/vendor/build exclusion policy.
+    required: false
+    default: "true"
+
+runs:
+  using: composite
+  steps:
+    - uses: arcade-agent/arcade-agent/actions/analyze@v0.4.2
+      with:
+        arcade-agent-version: ${{ inputs.arcade-agent-version }}
+        python-version: ${{ inputs.python-version }}
+        source-path: ${{ inputs.source-path }}
+        language: ${{ inputs.language }}
+        exclude-tests: ${{ inputs.exclude-tests }}
+        checkout: "false"
